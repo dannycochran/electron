@@ -12,18 +12,7 @@ This document uses the following convention to categorize breaking changes:
 * **Deprecated:** An API was marked as deprecated. The API will continue to function, but will emit a deprecation warning, and will be removed in a future release.
 * **Removed:** An API or feature was removed, and is no longer supported by Electron.
 
-## Planned Breaking API Changes (43.0)
-
-### Removed: Unity desktop environment support on Linux
-
-Unity has not been the default desktop environment in Ubuntu LTS since version 16.04, which is not supported by current versions of Electron. The deprecation does not
-prevent Electron from running on Unity if it is installed in a newer distribution, but it will no longer offer unique functionality. In general, Electron supports
-modern [Freedesktop](https://specifications.freedesktop.org/) standards on Linux rather than APIs which only work in specific environments.
-
-One API has been removed: `app.isUnityRunning()`. Some Unity-specific APIs no longer function on Linux, but remain supported on other platforms:
-
-* `app.setBadgeCount(count)` and `app.badgeCount` _macOS_
-* `BaseWindow.setProgressBar(progress)` and `BrowserWindow.setProgressBar(progress)` _Windows_ _macOS_.
+## Planned Breaking API Changes (44.0)
 
 ### Removed: `clipboard` module is no longer available in the renderer process
 
@@ -271,6 +260,19 @@ async function writeRTF (text, clipboardType) {
   return writeClipboard(RTF_MIME_TYPE, text, clipboardType)
 }
 ```
+
+## Planned Breaking API Changes (43.0)
+
+### Removed: Unity desktop environment support on Linux
+
+Unity has not been the default desktop environment in Ubuntu LTS since version 16.04, which is not supported by current versions of Electron. The deprecation does not
+prevent Electron from running on Unity if it is installed in a newer distribution, but it will no longer offer unique functionality. In general, Electron supports
+modern [Freedesktop](https://specifications.freedesktop.org/) standards on Linux rather than APIs which only work in specific environments.
+
+One API has been removed: `app.isUnityRunning()`. Some Unity-specific APIs no longer function on Linux, but remain supported on other platforms:
+
+* `app.setBadgeCount(count)` and `app.badgeCount` _macOS_
+* `BaseWindow.setProgressBar(progress)` and `BrowserWindow.setProgressBar(progress)` _Windows_ _macOS_.
 
 ### Behavior Changed: `NativeImage.toBitmap()` now normalizes color space
 
