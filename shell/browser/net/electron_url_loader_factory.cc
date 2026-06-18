@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/memory/self_deleting.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
@@ -402,8 +403,8 @@ ElectronURLLoaderFactory::Create(ProtocolType type,
 
   // The ElectronURLLoaderFactory will delete itself when there are no more
   // receivers - see the SelfDeletingURLLoaderFactory::OnDisconnect method.
-  new ElectronURLLoaderFactory(type, handler,
-                               pending_remote.InitWithNewPipeAndPassReceiver());
+  base::MakeSelfDeleting<ElectronURLLoaderFactory>(
+      type, handler, pending_remote.InitWithNewPipeAndPassReceiver());
 
   return pending_remote;
 }
@@ -411,8 +412,9 @@ ElectronURLLoaderFactory::Create(ProtocolType type,
 ElectronURLLoaderFactory::ElectronURLLoaderFactory(
     ProtocolType type,
     const ProtocolHandler& handler,
-    mojo::PendingReceiver<network::mojom::URLLoaderFactory> factory_receiver)
-    : network::SelfDeletingURLLoaderFactory(std::move(factory_receiver)),
+    mojo::PendingReceiver<network::mojom::URLLoaderFactory> factory_receiver,
+    base::SelfDeletingPassKey key)
+    : network::SelfDeletingURLLoaderFactory(std::move(factory_receiver), key),
       type_(type),
       handler_(handler) {}
 
